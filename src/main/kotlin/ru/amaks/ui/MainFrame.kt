@@ -1,5 +1,7 @@
 package ru.amaks.ui
 
+import ru.amaks.math.FirstFunc
+import ru.amaks.math.SecondFunc
 import ru.amaks.ui.painting.*
 import ru.amaks.ui.painting.Painter
 import java.awt.*
@@ -45,8 +47,8 @@ class MainFrame: JFrame() {
        // val mainPlane = Plane(xMinM.value as Double  , xMaxM.value as Double, yMinM.value as Double, yMaxM.value as Double)
         val mainPlane = Plane(-15.0  , 15.0, -15.0, 15.0)
         val cartesianPainter = CartesianPainter(mainPlane)
-        val nonParamPainter = NonParamPainter(mainPlane, fun (x :Double) = Math.sqrt(16 - x*x))
-        val paramPainter = ParamFuncPainter(mainPlane)
+        val nonParamPainter = NonParamPainter(mainPlane, FirstFunc())
+        val paramPainter = ParamFuncPainter(mainPlane, SecondFunc())
         painters.add(cartesianPainter)
         painters.add(nonParamPainter)
         painters.add(paramPainter)

@@ -1,12 +1,13 @@
 package ru.amaks.ui.painting
 
+import ru.amaks.math.ParamFunction
 import java.awt.*
 
-class ParamFuncPainter(private val plane: Plane) : Painter {
+class ParamFuncPainter(private val plane: Plane, var function : ParamFunction) : Painter {
     public var funColor: Color = Color.BLACK
-    private val tMin : Double = -10.0
-    override fun paint(g : Graphics) {
-        with (g as Graphics2D) {
+    private val tMin: Double = -10.0
+    override fun paint(g: Graphics) {
+        with(g as Graphics2D) {
             color = funColor
             stroke = BasicStroke(4F, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)
             val rh = mapOf(
@@ -19,22 +20,23 @@ class ParamFuncPainter(private val plane: Plane) : Painter {
                 RenderingHints.KEY_COLOR_RENDERING to RenderingHints.VALUE_COLOR_RENDER_QUALITY
             )
             setRenderingHints(rh)
-            with (plane) {
-                var t = tMin
-                while (t <= 10.0)
-                {
-                    drawLine(xCrt2Scr(Xfunc(t)), yCrt2Scr(Yfunc(t)), xCrt2Scr(Xfunc(t+0.1)), yCrt2Scr(Yfunc(t+0.1)))
-                    t+=0.1
+            with(plane) {
+                with(function) {
+                    var t = tMin
+                    while (t <= tMax) {
+
+                        drawLine(
+                            xCrt2Scr(Xfunc(t)),
+                            yCrt2Scr(Yfunc(t)),
+                            xCrt2Scr(Xfunc(t + step)),
+                            yCrt2Scr(Yfunc(t + step))
+                        )
+                        t += step
+                    }
                 }
             }
 
         }
     }
-    private fun Xfunc(t: Double): Double {
-            return Math.pow(2.0,t-1)
-        }
+}
 
-    private fun Yfunc(t: Double): Double {
-             return 0.25 * (Math.pow(t,3.0) + 1)
-        }
-    }

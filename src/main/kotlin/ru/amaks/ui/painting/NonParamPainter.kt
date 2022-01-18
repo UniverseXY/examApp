@@ -1,9 +1,10 @@
 package ru.amaks.ui.painting
 
+import ru.amaks.math.NonParamFunction
 import ru.amaks.math.ge
 import java.awt.*
 
-class NonParamPainter(private val plane: Plane, var function: (Double) -> Double = Math::sin) : Painter {
+class NonParamPainter(private val plane: Plane, var function: NonParamFunction) : Painter {
 
     public var funColor: Color = Color.BLUE
 
@@ -24,8 +25,8 @@ class NonParamPainter(private val plane: Plane, var function: (Double) -> Double
                 with (plane) {
                         for (x in 0 until width) {
                         // Строим отезок по пикселям
-                        if (Math.pow(function(xScr2Crt(x)), 2.0) ge 0.0 && Math.pow(function(xScr2Crt(x+1)), 2.0) ge 0.0  )
-                            drawLine(x,yCrt2Scr(function(xScr2Crt(x))) , x+1, yCrt2Scr(function(xScr2Crt(x+1))))
+                            if(function.isInDomain(xScr2Crt(x)) && function.isInDomain(xScr2Crt(x+1)))
+                                drawLine(x,yCrt2Scr(function.eval(xScr2Crt(x))) , x+1, yCrt2Scr(function.eval(xScr2Crt(x+1))))
                      }
 
                 }
